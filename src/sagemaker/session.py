@@ -76,7 +76,13 @@ class Session(object):  # pylint: disable=too-many-public-methods
     bucket based on a naming convention which includes the current AWS account ID.
     """
 
-    def __init__(self, boto_session=None, sagemaker_client=None, sagemaker_runtime_client=None):
+    def __init__(
+        self,
+        boto_session=None,
+        sagemaker_client=None,
+        sagemaker_runtime_client=None,
+        default_bucket=None,
+    ):
         """Initialize a SageMaker ``Session``.
 
         Args:
@@ -91,8 +97,11 @@ class Session(object):  # pylint: disable=too-many-public-methods
                 ``InvokeEndpoint`` calls to Amazon SageMaker (default: None). Predictors created
                 using this ``Session`` use this client. If not provided, one will be created using
                 this instance's ``boto_session``.
+            default_bucket (str): User override for the default bucket to use in relevant Amazon
+                SageMaker interactions. If not provided, the name of the default bucket will be
+                of the form: ``sagemaker-{region}-{AWS account ID}``.
         """
-        self._default_bucket = None
+        self._default_bucket = default_bucket
 
         # currently is used for local_code in local mode
         self.config = None
